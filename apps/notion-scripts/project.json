@@ -1,0 +1,67 @@
+{
+  "name": "notion-scripts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/notion-scripts/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/notion-scripts",
+        "main": "apps/notion-scripts/src/main.ts",
+        "tsConfig": "apps/notion-scripts/tsconfig.app.json",
+        "assets": ["apps/notion-scripts/src/assets"],
+        "sourceMap": true,
+        "isolatedConfig": true,
+        "webpackConfig": "apps/notion-scripts/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "sourceMap": true
+        },
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "notion-scripts:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "notion-scripts:build:development"
+        },
+        "production": {
+          "buildTarget": "notion-scripts:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/notion-scripts/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/notion-scripts/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
